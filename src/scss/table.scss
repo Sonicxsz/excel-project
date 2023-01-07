@@ -11,6 +11,8 @@
     flex-direction: row;
     min-height: 20px;
     height: $row-height;
+    user-select: none;
+    
   }
 
   .row-info {
@@ -22,6 +24,8 @@
     border: 1px solid $border-color;
     background-color: #f8f9fa;
     border-top: none;
+    position: relative;
+    user-select: none;
   }
 
   .row-data {
@@ -37,6 +41,8 @@
     border: 1px solid $border-color;
     border-top: none;
     border-left: none;
+    position: relative;
+    user-select: none;
   }
 
   .cell {
@@ -55,5 +61,29 @@
       outline: 2px solid #3c74ff;
       z-index: 2;
     }
+  }
+
+  .col-size, .row-size{
+    position: absolute;
+    background-color: #3c74ff;
+    right: 0;
+    opacity: 0;
+    z-index: 1000;
+    &:hover{
+      opacity: 1!important;
+    }
+   
+  }
+  .col-size{
+    width: 4px;
+    bottom: 0;
+    top: 0;
+   
+  }
+  .row-size{
+    height: 4px;
+    left: 0;
+    bottom: 0;
+   
   }
 }

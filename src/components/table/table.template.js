@@ -3,26 +3,30 @@
 
 
 function createRow(ind, content){
+    const resize = ind ? '<div class="row-size" data-resize="row"></div>' : ''
     return `
-    <div class="row">
-        <div class="row-info">${ind ? ind : ''}</div>
+    <div class="row" data-type="rezible">
+        <div class="row-info">${ind ? ind : ''}
+        ${resize}
+        </div>
         <div class="row-data">${content}</div>
-                    
     </div>
     `
 }
 
-function createCell(){
+function createCell(_, index){
     return `
-        <div class="cell" contenteditable></div>
+        <div class="cell" contenteditable data-index="${index}"></div>
     `
 }
 
-function createColumn(cont){
+function createColumn(cont, ind){
   return `
-  <div class="column">
+  <div class="column" data-type="rezible" data-index="${ind}">
     ${cont}
+    <div class="col-size" data-resize="col"></div>
   </div>
+
   `
 }
 
@@ -39,7 +43,7 @@ export function createTable(rowsCount = 30) {
     const cols = new Array(colsCount)
         .fill('')
         .map((i, ind) => String.fromCharCode(CODES.A + ind))
-        .map(i => createColumn(i))
+        .map((i, ind) => createColumn(i, ind))
         .join('')
 
         row.push(createRow(null, cols))

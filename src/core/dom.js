@@ -32,6 +32,22 @@ class Dom {
             this.$el.appendChild(node.$el)
         }
     }
+
+    closest(selector){
+        return $(this.$el.closest(selector))
+    }
+  
+
+    css(styles={}){
+        Object.keys(styles).forEach(key => {
+            this.$el.style[key] = styles[key]
+            
+        })
+    }
+
+    getCoord(){
+        return this.$el.getBoundingClientRect()
+    }
 }
 
 
