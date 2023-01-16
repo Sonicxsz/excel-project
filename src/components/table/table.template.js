@@ -14,10 +14,12 @@ function createRow(ind, content){
     `
 }
 
-function createCell(_, index){
-    return `
-        <div class="cell" contenteditable data-index="${index}"></div>
+function createCell(row){
+    return (_, index) => {
+        return `
+        <div class="cell" contenteditable data-type='cell' data-index="${index}" data-id="${row}:${index}"></div>
     `
+    }
 }
 
 function createColumn(cont, ind){
@@ -50,7 +52,7 @@ export function createTable(rowsCount = 30) {
     for(let i = 0; i < rowsCount; i++){
         const cels = new Array(colsCount)
             .fill('')
-            .map(createCell)
+            .map(createCell(i))
             .join('')
         row.push(createRow(i + 1, cels))
         
