@@ -1,50 +1,42 @@
-import { $ } from "../../core/dom";
+import { range } from "../../core/utils"
 
+export const isCell = (event) => {
+    return event.target.dataset.type === 'cell'
+}
 
-export const resizerFunc = (event) => {
-    const $rezirer = $(event.target)
-    const $parent = $rezirer.closest('[data-type="rezible"]')
-    const coord = $parent.getCoord()
-    const resizeType = $rezirer.$el.dataset.resize
-    const index = $parent.$el.dataset.index
-    const $cells = document.querySelectorAll(`[data-index="${index}"]`)
-    const resizeCssWitdh = resizeType === 'col' ? 'bottom' : 'right'
-    const resizeCssPosition = resizeType === 'col' ? 'right' : 'bottom'
-   if(resizeType){
-    $rezirer.css({
-        [resizeCssWitdh]: '-5000px',
-        opacity: 1
-    })
-    let resize;
+export const matrix = ($current, $target) => {
+    const current = $current.id(true)
+    const target = $target.id(true)
 
-    if(resizeType === 'col'){
-        document.onmousemove = e => {  
-            resize = (coord.width + (e.x - coord.right))
-            $rezirer.css({right: (coord.width -resize) + 'px'})
-        }
-    }else{
-        document.onmousemove = e => {
-            resize = (e.y - coord.bottom)
-            $rezirer.css({bottom:  -resize + 'px'})
-        }
-        
+    const cols = range(current.col, target.col)
+               const rows = range(current.row, target.row)
+                
+               return cols.reduce((acc, col) => {
+                rows.forEach(i => {
+                    acc.push(`${i}:${col}`)
+                })
+                return acc
+               },[])        
+
+}
+
+export const nextSelector = (key, {row, col}) =>{
+    switch(key){
+        case 'ArrowDown':
+        case 'Enter':
+            row++
+            break;
+        case 'ArrowRight':
+        case 'Tab': 
+        col++
+            break;
+        case 'ArrowLeft':     
+            col = col > 0 ? --col : 0
+            break;
+        case 'ArrowUp': 
+            row = row > 0 ? --row : row
+
     }
 
-    document.onmouseup = e => {
-        document.onmousemove = null;
-        document.onmouseup = null;
-        if(resizeType === 'col'){
-            $parent.css({width: resize})
-            $cells.forEach(i => {i.style.width = resize + 'px'}) 
-        }else{
-            $parent.css({height: coord.height + resize + 'px'})
-        }
-        $rezirer.css({
-            [resizeCssWitdh]: '0',
-            [resizeCssPosition]: '0',
-            opacity: 0
-        })
-    }
-   }
-
+    return `[data-id="${row}:${col}"]`
 }
